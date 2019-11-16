@@ -45,6 +45,20 @@ for i in range(64):
 # p = poison
 # f = food
 # b = bot
+def handover():
+    global botnum, overload, turn_end,bots,genomes
+    bots[botnum][2] -= 1        #Скушал хп у бота
+    if bots[botnum][2] == 0:
+        dead(botnum)
+    if numbot == alive:
+        numbot = 1
+        gen_time += 1
+    else 
+        numbot += 1
+    overload = 0
+    turn_end = False
+        
+        
 def create_field():  # 20-27x10-17
     for i in range(HEIGHT):
         for j in range(WIDTH):
@@ -75,10 +89,13 @@ def mainfunc():
     global botnum, overload, turn_end,bots,genomes # Объявление глобальных переменных
     if botnum == 1:
         gen_food()                     # Генерация еды
-    if genomes [botnum] [bots [botnum] [4] ] > 39:
-        act = (genomes [botnum] [bots [botnum] [4] ] - 39) // 8 
-        else act = genomes [botnum] [bots [botnum] [4] ] // 8
-     switcher = {  # Словарь который послужит переключателем команд
+    while genomes[bots[numbot][4]]>39:
+        overload += 1
+        bots[numbot][4] = (bots[numbot][4] + genomes[bots[numbot][4]]) % 80
+        if overload == 10:
+            handover()                 #Вызов функции передачи хода
+    act = genomes[bots[numbot][4]] // 8
+    switcher = {  # Словарь который послужит переключателем команд
         1: grab,  # Тут написаны имена мини-функций
         2: attack,
         3: turn,
@@ -87,15 +104,7 @@ def mainfunc():
     }
     root.after(10,switcher[act]())  # По ключу переходит к функции, аргументы функции задаются в ()
     if turn_end or overload == 10:  # Смена хода
-        bots[botnum][2] -= 1        #Скушал хп у бота
-        if bots[botnum][2] == 0:
-        dead(botnum)
-        if numbot == alive:
-            numbot = 1
-            gen_time += 1
-            else numbot += 1
-        overload = 0
-        turn_end = False
+        handover()    
     mainfunc()
 
 
