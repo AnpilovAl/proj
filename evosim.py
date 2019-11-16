@@ -18,12 +18,21 @@ canv = Canvas(root, width=1440, height=810, bg="black")
 canv.pack()
 genomes = [list(map(int, open("genom.evo", "r").readline().split())) for i in range(64)]
 bots = [[20 + i // 8, 10 + i % 8, 20, 0, 0] for i in range(64)]
+#[0] - y
+#[1] - x
+#[2] - HP
+#[3] - orientation:
+#7 0 1
+#6 b 2
+#5 4 3
+#[4] - genome pointer
+#[5] - graphic rectangle
 alive = 64
 map1 = []
 botnum = 1                          #Номер текущего бота 
 turn_end = False                        #Флаг на окончание хода               
 overload = 0                        #Число ботов
-
+gen_time = 0
 
 for i in range(HEIGHT):
     map1.append(list(MAP.readline()))
@@ -77,13 +86,14 @@ def mainfunc():
         5: look,
     }
     root.after(10,switcher[act]())  # По ключу переходит к функции, аргументы функции задаются в ()
-    bots[botnum][2] -= 1            #Скушал хп у бота
-    if bots[botnum][2] == 0:
-        dead(botnum)
     if turn_end or overload == 10:  # Смена хода
-        if botnum == alive:
-            botnum=1
-            else botnum += 1
+        bots[botnum][2] -= 1        #Скушал хп у бота
+        if bots[botnum][2] == 0:
+        dead(botnum)
+        if numbot == alive:
+            numbot = 1
+            gen_time += 1
+            else numbot += 1
         overload = 0
         turn_end = False
     mainfunc()
