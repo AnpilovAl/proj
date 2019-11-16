@@ -63,7 +63,7 @@ def create_field():  # 20-27x10-17
 
 
 def mainfunc():
-    global botnum, overload, turn_end,bots,genome # Объявление глобальных переменных
+    global botnum, overload, turn_end,bots,genomes # Объявление глобальных переменных
     if botnum == 1:
         gen_food()                     # Генерация еды
     if genomes [botnum] [bots [botnum] [4] ] > 39:
